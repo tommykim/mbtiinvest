@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 투자 성향 MBTI | MBTIinvest</title>
+  <meta name="description" content="10개 질문으로 5분 만에 당신의 투자 성향을 진단하고 최적의 자산 배분 예시 포트폴리오를 제공받으세요.">
+  
+  <!-- SEO & Open Graph Tags -->
+  <meta property="og:title" content="나의 투자 성향 MBTI | MBTIinvest">
+  <meta property="og:description" content="10개 질문으로 5분 만에 당신의 투자 성향을 진단하고 최적의 자산 배분 예시 포트폴리오를 제공받으세요.">
+  <meta property="og:type" content="website">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <!-- Chart.js and html2canvas CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <!-- Decorative background elements -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-symbol">⚖️</span>
+        <span class="logo-text">MBTI<span>invest</span></span>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <!-- 1. Start Screen -->
+      <section id="start-screen" class="view-panel active">
+        <div class="hero-content">
+          <div class="badge">TEST YOUR STYLE</div>
+          <h1 class="main-title">10개 질문, 5분 만에 알아보는<br><span class="highlight">나의 투자 성향 & 포트폴리오</span></h1>
+          <p class="intro-description">
+            투자를 시작하고 싶지만 내 자산을 어떻게 쪼개어 담아야 할지 막막하신가요? <br>
+            재미있는 성향 유형 분석과 함께 나에게 적합한 모의 자산 배분 비율을 한눈에 확인해보세요!
+          </p>
+        </div>
+
+        <div class="glass-card start-card">
+          <div class="card-features">
+            <div class="feature-item">
+              <span class="feature-icon">⏱️</span>
+              <div class="feature-info">
+                <h3>초고속 5분 진단</h3>
+                <p>간단한 10개 질문으로 신속하게 분석</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📊</span>
+              <div class="feature-info">
+                <h3>성향별 자산배분</h3>
+                <p>국내/해외 주식, 채권, 현금 비중 예시</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🔒</span>
+              <div class="feature-info">
+                <h3>비로그인 / DB 무설치</h3>
+                <p>개인정보 저장 없이 안심하고 이용</p>
+              </div>
+            </div>
+          </div>
+
+          <button id="btn-start" class="btn btn-primary btn-pulse">
+            진단 시작하기
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="legal-notice-box">
+          <p class="legal-notice-title">⚠️ 서비스 이용 전 필독 고지사항</p>
+          <p class="legal-notice-content">
+            본 서비스는 투자 교육 및 오락 목적의 성향 진단 콘텐츠이며, 특정 금융 상품의 판매 권유, 매수 추천 또는 자문 등 금융 투자업 법상의 투자 자문 서비스가 아닙니다. 제시되는 포트폴리오 비중 예시는 과거 이론적 데이터에 기반한 참고치일 뿐이며 미래 수익률을 보장하지 않습니다. 실제 투자는 본인의 책임하에 진행되어야 합니다.
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. Quiz Screen -->
+      <section id="quiz-screen" class="view-panel">
+        <div class="quiz-progress-container">
+          <div class="progress-info">
+            <span class="progress-label">진단 진행률</span>
+            <span id="quiz-progress-text" class="progress-percent">0% (0 / 10)</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="quiz-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="glass-card quiz-card">
+          <div class="question-number-badge">Question <span id="current-question-num">1</span></div>
+          <h2 id="question-text" class="question-text">질문을 불러오는 중입니다...</h2>
+          
+          <div class="likert-scale-container">
+            <p class="scale-guide-text">자신의 성향에 가장 가까운 답변을 선택하세요.</p>
+            <div id="quiz-options" class="options-list">
+              <!-- Dynamically populated options -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Result Screen -->
+      <section id="result-screen" class="view-panel">
+        <!-- Capture Target: Result Card -->
+        <div id="result-card" class="result-card-container">
+          <div class="card-header">
+            <span class="badge-result">DIAGNOSTIC REPORT</span>
+            <h2 id="result-title" class="result-title-text">거침없이 돌진하는 불도저 투자자 🚜</h2>
+            <div id="result-keywords" class="result-keywords">
+              <!-- Keywords e.g. #고위험고수익 #해외주식올인 -->
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <!-- Summary Column -->
+            <div class="result-col col-summary">
+              <div class="info-section">
+                <h3 class="section-title">📊 나의 투자 성향 유형</h3>
+                <p id="result-description" class="result-desc-text">
+                  투자 분석 설명이 들어갈 자리입니다.
+                </p>
+              </div>
+
+              <div class="info-section">
+                <h3 class="section-title">💡 나를 위한 행동 팁</h3>
+                <ul id="result-tips" class="tips-list">
+                  <!-- Mapped tips -->
+                </ul>
+              </div>
+            </div>
+
+            <!-- Visualizations Column -->
+            <div class="result-col col-charts">
+              <!-- Radar Chart (Dimensions) -->
+              <div class="chart-box">
+                <h4 class="chart-title">나의 투자 레이더 (5대 성향 지표)</h4>
+                <div class="chart-wrapper">
+                  <canvas id="radarChart"></canvas>
+                </div>
+              </div>
+
+              <!-- Pie Chart (Asset Allocation) -->
+              <div class="chart-box">
+                <h4 class="chart-title">예시 포트폴리오 자산 배분</h4>
+                <div class="chart-wrapper">
+                  <canvas id="pieChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Allocation Table -->
+          <div class="allocation-table-box">
+            <h4 class="table-title">포트폴리오 상세 비중</h4>
+            <div class="table-responsive">
+              <table class="allocation-table">
+                <thead>
+                  <tr>
+                    <th>자산군</th>
+                    <th>비중 (%)</th>
+                    <th>상세 특징</th>
+                  </tr>
+                </thead>
+                <tbody id="allocation-table-body">
+                  <!-- Dynamic rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Embedded Disclaimer inside Result Card (Must be exported in html2canvas) -->
+          <div class="result-card-footer">
+            <div class="disclaimer-title">⚠️ 투자 성향 분석 법적 책임 한계 고지 (Disclaimer)</div>
+            <div class="disclaimer-content">
+              본 카드의 진단 결과 및 자산 배분 비중은 모의 성향 테스트에 근거한 교육·참고용 모델 포트폴리오 예시입니다. 특정 예금, 적금, 주식, 채권 등 개별 금융 투자 상품에 대한 권유나 추천이 아니며, 미래의 수익 실현이나 손실 회피를 보장하지 않습니다. 모든 실제 투자 행위와 최종 성과에 대한 귀속 및 손익 책임은 투자자 본인에게 있습니다.
+            </div>
+            <div class="disclaimer-copyright">© MBTIinvest. All rights reserved.</div>
+          </div>
+        </div>
+
+        <!-- Action Button Panel (Not captured in html2canvas) -->
+        <div class="result-actions-panel">
+          <button id="btn-save-img" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            이미지로 결과 저장
+          </button>
+          
+          <button id="btn-copy-link" class="btn btn-secondary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            결과 링크 복사
+          </button>
+
+          <button id="btn-restart" class="btn btn-outline">
+            처음으로 돌아가기
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>본 서비스는 비영리 교육용 데모 웹 콘텐츠입니다. 개인정보를 절대 수집하지 않습니다.</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript Entry Point -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
