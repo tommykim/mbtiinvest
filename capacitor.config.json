@@ -1,0 +1,9 @@
+{
+  "appId": "com.tommykim.mbtiinvest",
+  "appName": "MBTIinvest",
+  "webDir": "public",
+  "server": {
+    "url": "https://mbtiinvest.vercel.app",
+    "cleartext": false
+  }
+}
